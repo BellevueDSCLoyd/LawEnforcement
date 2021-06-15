@@ -8,5 +8,5 @@ This project was one of my first. I used R to explore the data and attempted a l
 
 ## Format
 
-R was used to code the exploration. R markdown was used to create a pdf of the final work.
+R was used to [code](FinalProject_LoydSam_Task3.r) the exploration. [R-markdown](FinalProject_LastDraft.rmd) was used to create a [pdf](FinalProject_LoydSam.pdf) of the final work.
 
