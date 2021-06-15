@@ -1,0 +1,432 @@
+---
+title: "An Analysis of Criminal Justice Data"
+author: "Sam Loyd"
+date: "March 2, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(ggplot2)
+library(kableExtra)
+```
+
+```{r, include=FALSE}
+source('FinalProject_LoydSam_Task3.R')
+```
+
+
+#Background
+
+Several years ago, one of my son’s friends was abducted and assaulted by her school bus driver.  My son who was only 15 at the time worked with local law enforcement to help track her down by contacting common friends with social media, his cell phone and various apps at his disposal.  Since then, he has been fascinated with criminal justice and in pursuing a career in that field. He has just completed his first semester of study in criminal justice in college.  Of course, that makes his mom and I a bit nervous given the media portrayal of how dangerous a career in that field is.  
+
+#Interests
+
+I am trying to address forming a realistic level of concern around hazards in my son's chosen profession in criminal justice in addition to exploring a few areas of interests that I have in relation to race, region and gender using criminal justice data.  I plan to address this by fully researching the three data sets that I have found so far.  I have two key interests.  The first is to make recommendations to my son that will minimize my concerns about the dangers that he may face.  The second is to assess how gender and/or race might impact arrests and ultimately police shootings.
+
+#Problem Statement
+
+Evaluate the three datasets obtained from the Washington Post and the FBI to gain a realistic understanding of the dangers faced by law enforcement and to use the same data to evaluate the impact of possible bias by law enforcement in relation to race and gender that might impact interactions with the public as measured through arrests and police shootings. 
+
+#Research Questions
+
+##A.	Safety Concerns
+
+*	Should I encourage my son to move to a new area in the country based on real evidence from the data? 
+*	What type of community would be the safest working environment for him? 
+* Is there a safer shift that he should consider? 
+
+##B.	General Interests
+
+*	Is there a correlation between gender and the total number of arrests?
+*	Is there a correlation between race and ethnicity categories and the total number of arrests?
+*	Is there a correlation between race and police shootings?
+*	The class asked if there is a correlation between arrests of residents and undocumented Hispanic immigrants?
+
+#Audience
+
+Given my interest and a broader exploration of variables that I am already considering for the work, the audience will be this class which by the end of the semester should allow for a technical exploration.  I want to feel free to use all the tools that I will learn to explore the data.  I was tempted to use the general public as my audience, but I felt that doing so might limit the scope at worst and require a lot of explaining at best, and I wanted to focus more on what the data had to say.
+
+#Purpose
+
+Answers to these questions will help me talk to my son with a level of confidence about my concerns for his safety.  It will also allow me to inform the class what I learn about working hazards for law enforcement workers in addition to concerns about how their bias might affect the public at large.
+
+#Methodology:
+
+1.	Data Acquisition
+*	Kaggle
+*	FBI
+2.	Data Wrangling
+*	Missingness Analysis (MAR)
+* New Summaries
+3.	Data analysis - EDA
+*	Distribution Analysis
+*	Correlation Analysis
+4.	Modeling  
+5.	Reporting
+
+#Data Sets
+
+##Washington Post: Fatal Shootings By Police Data Set
+
+The first data set which piqued my interest when I randomly started looking for datasets was titled, The Washington Post's Dataset of Fatal Police Shootings in the US since 2015 available from the following hyperlink on kaggle.com.
+
+[https://www.kaggle.com/brendanhasz/fatal-police-shootings#fatal-police-shootings-data.csv](https://www.kaggle.com/brendanhasz/fatal-police-shootings#fatal-police-shootings-data.csv)
+
+Acknowledgements and licenses for the data can be found at the following hyperlink.  There was no codebook, but a description of the variables is available here as well.
+
+[https://www.kaggle.com/brendanhasz/fatal-police-shootings/home](https://www.kaggle.com/brendanhasz/fatal-police-shootings/home)
+
+The data was provided by Brendan Has, a PHD student with the University of Minnesota.  There were 14 variables in the original dataset.  The data in this set included categorical variables such as id, name of individual shot, date of shooting, race, gender, city, state, evidence of mental illness, flight during incident, if the individual was armed, threat level and whether the officer involved wore a body camera. A count will be used summing various categorical values in my evaluation, and I have done early work on age which is quantitative.  Race values were missing for several of the incidents reported as well as missing data for age and a weapon if armed.  Missing data is inconsistent in this data and ranges from a NA value to just an empty column.  There was one observation recorded per fatal shooting.
+
+_Fatal Policie Shooting Data Set Structure:_
+
+```{r}
+   glimpse(FatPShoot1416)  
+```
+
+##NIBRS Data Sets
+
+```{r,out.width = "90%", fig.align = "center"}
+   knitr::include_graphics("NiBrsConStates.Png")
+```
+
+###NIBR National Arrests Data Set
+
+From this I wanted to compare certain frequencies against overall interactions with the public that involved arrests through the Arrest Data - Reported Number of Adult Arrests by Crime dataset available from the FBI’s Crime Data Explorer.  The dataset was recorded by the FBI for years 1995-2016 and was last modified January 1, 2017.  The data for a given year only includes agencies that reported for the full 12 months.  
+
+The dataset has 84 observations and 11 variables. This data set also includes the year and offense which are categorical and totals for gender and race which are quantitative.  There is one observation per year per type of offense.
+
+This dataset can be found at the following link.
+
+[https://crime-data-explorer.fr.cloud.gov/downloads-and-docs](https://crime-data-explorer.fr.cloud.gov/downloads-and-docs)
+
+*NIBR National Arrest Data Set Structure:*
+
+```{r}
+   glimpse(NatArr1416)  
+```
+
+In order to answer the question posed from the class, I also downloaded the datasets used to build the Arrest Data - Reported Number of Adult Arrests by Crime dataset above.  They were obtained from the same website and data source and were merged for years 2014 through 2016 into a data set that will be referenced as the National Incident Based Records or NIBR data set.  This data held variables for ethnicity and residency status which could help with a question from the class.
+
+###NIBR Daily Arrest Data Set
+
+*NIBR Daily Arrest Total Data Set Structure:*
+
+```{r}
+   glimpse(NIBRTOTAL)  
+```
+
+##Officer Injury and Fatality Data Set
+
+And finally, also from the same FBI data source, I chose to look at assaults against police officers in the Assaults on Law Enforcement Officers dataset which can be found at the same link above.  This data was last updated on September 24, 2018 for years 1995-2017.  It has 31 variables.  I will not use all the variables, but of key interest to me are the fatality and injury related columns.  I am currently planning on using year, region, population group, and various injury and fatality counts taken from this data set.  Year, region and population group are all categorical while the two-hour time ranges of assault and injury variables that both provide totals are quantitative.  There was one observation recorded per year per reporting agency.
+
+*Summarized Officer Injury Data Set Structure:*
+
+```{r}
+   glimpse(Leoka1416)  
+```
+
+#Data Wrangling
+
+##Police Shooting Data Set
+
+The original data set was by individual shootings.  I decided to summarzie those by date to allow for better analysis.
+
+
+*Summarized By Day Police Shootin Data Set Structure:*
+
+```{r}
+   glimpse(FPSHOOTTOTAL)  
+```
+
+
+##NIBR Data Sets
+
+###National Arrest Data Set
+
+This data set was already summarized to a degree that did not allow for any significant wrangling.
+
+###NIBR Daily Arrest Data Set
+
+As mentioned above, the original NIBR National Arrest total data set was too summarized to adequately address several questions.  I had to go back to the original NIBR website and pull from the states that provided detailed data.  I then had to summarize that data in a format to allow for proper correlation analysis.  I chose to summarize this data by date using totals for race groupings and ethnicity groupings in addition to residency.
+
+##Officer Injury and Fatality Data Set
+
+No further summarization was required.
+
+#Current Missingness Data Analysis:
+
+##Fatal Police Shootings:              
+
+###Original Dataset
+
+```{r,echo=FALSE, comment=""}
+   gg_miss_upset(FatPShoot1416)
+```
+*The graph's y-axis is in individual units.*
+
+This graph show overlapping missingness in addition to giving total overall missingness.  This would indicate mostly MAR or Missing at Random.
+
+```{r,echo=FALSE, comment=""}
+   miss_var_summary(FPSHOOTTOTAL)
+```
+
+###Summary NIBR 
+
+```{r,echo=FALSE, comment=""}
+   miss_var_summary(NIBRTOTAL)
+```
+ 
+Due to the summary nature of this data set there is no missingness to discuss.
+
+##Adult Arrests by Crime:        
+
+```{r,echo=FALSE, comment=""}
+   miss_var_summary(NatArr1416)
+```
+
+Due to the summary nature of this data set there is no missingness to discuss.
+
+##Officer Injury and Fatality
+
+```{r,echo=FALSE, comment=""}
+   miss_var_summary(Leoka1416)
+```
+
+A signficant number of counties are missing, but these were not needed for the analysis that is required to answer my qestions.
+
+#Exploratory Data Analysis
+
+##Police Shooting Data Set
+
+###Distribution Histograms
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(FP_TOT_HIST, FP_HIS_HIST, FP_CAUC_HIST,FP_BLACK_HIST, cols=2)
+```
+*These histograms show individual deaths as a unit of measure.*
+
+###Probability Plots
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(FP_TOT_QQ, FP_HISP_QQ, FP_CAUC_QQ,FP_BLACK_QQ, cols=2)
+```
+
+###Stat.desc Function
+
+```{r,echo=FALSE, fig.align = "center"}
+   round(stat.desc(FPSHOOTTOTAL[2:5],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+The graphs indicate a non normal distribution with high ranking.  For this reason I will use the Kendall method for correlation analysis.
+
+```{r, out.width = "75%", fig.align = "center"}
+   corrplot(cor_matrix_fp, method = "circle")
+```
+
+The graph shows that of the racial totals, the one for caucausians seems to have the highest correlation to total fatalities.  
+
+##NIBR Data Sets
+
+###NIBR National Arrest Data Set
+
+```{r, out.width = "75%", fig.align = "center"}
+  ROUT_DOT_WHITE
+```
+*X-Axis shows individual offenses as a unit of measure.*
+
+```{r, out.width = "75%", fig.align = "center"}
+  ROUT_DOT_BLACK
+```
+*X-Axis shows individual offenses as a unit of measure.*
+
+###NIBR Daily Arrest Data Set
+
+####Distribution Histograms
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(ROUT_TOT_HIST, ROUT_UND_HIST, ROUT_CAUC_HIST,ROUT_BLACK_HIST, cols=2)
+```
+
+*Histogram shows individual arrests as a unit of measure.*
+
+In order to perform correlation analysis on this data, I needed to know if it was normally distributed to ascertain which correlation model to apply. It is readily apparent that all but undocumented arrests are skewed to the left and undcoumented is right skewed.  This does not appear to be a normally distributed data set.  This would lend to using non parametric correlation analysis such as Spearman.
+
+####Distribution Probability Plots
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(ROUT_TOT_PP, ROUT_UNDOC_PP, ROUT_CAUC_PP,ROUT_BLACK_PP, cols=2)
+```
+
+###Stat.desc Function
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(NIBRTOTAL[2:6],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(NIBRTOTAL[7:10],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(NIBRTOTAL[11:13],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+The notable skew and graphs all support a non normal distribution.  There does not appear to be significant ranking. Due to this, I have chosen Spearman's model for correlation testing.
+
+```{r, out.width = "90%", fig.align = "center"}
+  corrplot(cor_matrix, method = "circle")
+```
+
+The correlation graph can be used as a matrix to determine the degree to which two variables are correlated in the model observed.  In this case the Spearman method was used with the cor function in R to determine correlation.  Shading and Size show signficance while color shows positive or negative correlation.  In this case all were positive. 
+
+##Officer Injury and Fatality Data Set
+
+```{r, fig.align = "center"}
+ggplot(data=Leoka1416, aes(x=Leoka1416$POPULATION_GROUP_DESC, y=Leoka1416$LEOKA_FELONY_KILLED, fill=factor(Leoka1416$DATA_YEAR))) + 
+  labs(title = "Officers Killed By Population Group", x = "Region", y = "Officers Killed") +
+  theme(legend.title=element_blank()) +
+  geom_bar( width=.8, stat="identity") +
+  coord_flip()
+```
+*Graph is shown in individual deaths.*
+
+
+```{r, out.width = "75%", fig.align = "center"}
+ggplot(data=Leoka1416, aes(x=Leoka1416$REGION_NAME, y=Leoka1416$LEOKA_FELONY_KILLED, fill=factor(Leoka1416$DATA_YEAR))) + 
+  labs(title = "Officers Killed By Region", x = "Region", y = "Officers Killed") +
+  theme(legend.title=element_blank()) +
+  geom_bar( width=.8, stat="identity") 
+```
+*Graph is shown in individual deaths.*
+
+###Officer Injury and Fatality Distribution Histograms
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_0_2_HIST, LK_2_4_HIST, LK_4_6_HIST,LK_6_8_HIST,
+             cols=2)
+```
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_8_10_HIST, LK_10_12_HIST, LK_12_14_HIST,LK_14_16_HIST,
+             cols=2)
+```
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_16_18_HIST, LK_18_20_HIST, LK_20_22_HIST,LK_22_00_HIST, cols=2)
+```
+
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_TOT_HIST, cols=2)
+```
+*Graphs are given in individual units of deaths or injuries.*
+
+###Officer Injury and Fatality Probability Plots
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_00_02_QQ, LK_02_04_QQ, LK_04_06_QQ,LK_06_08_QQ,
+             cols=2)
+```
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_08_10_QQ, LK_10_12_QQ, LK_12_14_QQ,LK_14_16_QQ,
+             cols=2)
+```
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_16_18_QQ, LK_18_20_QQ, LK_20_22_QQ,LK_22_00_QQ,
+             cols=2)
+```
+
+
+```{r, out.width = "75%", fig.align = "center"}
+   multiplot(LK_TOT_QQ, cols=2)
+```
+
+###Stat.desc Function (using a random sampling)
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(Leoka1416Ran[9:11],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(Leoka1416Ran[12:14],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(Leoka1416Ran[15:17],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(Leoka1416Ran[18:20],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   round(stat.desc(Leoka1416Ran[29],basic = FALSE, norm = TRUE), digits = 2)
+```
+
+All these graphs and the values returned in the stat.desc funciton indicate that the data is not normally distributed.  There is significant right skew in every case.  This is due to the reporting method by agency and they vary greatly in size.  The Kenddall method was chosen for correlation analysis due to the high degree of ranking at the bottom of each graph.
+
+```{r, echo=FALSE, fig.cap=""}
+    knitr::include_graphics("CorLeoka.png")
+```
+
+While the circle graph shows some slight variance in correlation, no time frame stood out as significantly higher than the others.
+
+#Machine Learning
+
+For this section, I decided to determine if an effective model could be used to determine gender of the deceased from the police shooting data using the other values in the data frame.  I used glmulti to obtain a model which is summarized here.  Given the categorical nature of the data and the number of dimensions plotting would prove quite challenging.  
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   summary(modelFP)
+```
+
+This model resulted in only 89% accuracy.  The model was much more successful at determining male individuals, but the data was also strongly skewed male.  This can be seen in the matrix shown below.  Accuracy was determined in two ways.  First the entire data set was used and then the data was split into an 80 percent training model and accuracy was determined against the remaining 20.  The same accuracy value was returned for each method.  
+
+The following matrix shows the model against the entire data set.
+
+```{r,echo=FALSE,out.width = "60%", fig.align = "center"}
+   cm
+```
+
+This result was computed using a training model and the confusionmatrix() function from the caret package.   
+
+```{r,echo=FALSE, fig.align = "center"}
+   result
+```
+
+
+```{r,echo=FALSE, out.width = "90%", fig.align = "center"}
+plot(roc, 
+     colorize=T,
+     main = "ROC Curve",
+     ylab = "Sensitivity",
+     xlab = "1-Specificity")
+abline(a=0, b=1)
+
+
+auc <- performance(pred, "auc")
+auc <- unlist(slot(auc, "y.values"))
+auc <- round(auc,4)
+legend(.6, .3, auc, title = "AUC")
+```
+
+Since this test was done to determine if there were any variables worth exploring in relation to determining gender instead of requiring an effective model for answering key questions, I concluded the experiments at this point as both metrics of accuracy and area under the curve showed the model as less effective than desired.
+
+#Conclusions and Reporting
+
+This research started with a few questions around criminal justice data and how it might impact my son’s proposed career in law enforcement.  I have an interesting update on that front, but I’ll reserve that information until after I report on the relevant questions.  I opened my research up to further questions and insights as I explored the data and obtained another question from the class around immigration status.  After exploring my initial questions on safety, I focused on issues of race, gender and residency.  Key to this process were method found in the data science process.  From data acquisition to data cleansing to exploratory data analysis to modelling and finally to the reporting which I am about to conclude.  
+
+I will take a father’s liberty and first report on the data that mattered most to me.  Looking at this data, I would indeed encourage my son to move to a safer area of the country like the North East.  I would encourage him to avoid small cities with populations under 100,000.  I did find that surprising and expected large cities to prove to be the most dangerous.  The data on safer shifts did not show a clear shift with a strong correlation to danger.  I found that surprising as I would have thought the night shift more dangerous based anecdotal media coverage.  There were correlations to safer hours, but the correlation was subtle.  Fortunately for me and before I shared this data with him, my son took me to the side a few weeks ago and told me that he had decided to switch majors and become an engineer.  I see the irony given all the work, but given how much I have learned, and that the data proved more interesting than I would have thought without that context, I am content reporting his decision made without the information obtained from my project.
+
+Both genders showed positive correlations to the total number of arrests, but the data showed a stronger correlation for males.  That aligned with my preconceived notions and early graphing in the data exploration.   Caucasians proved to have the strongest correlation to total arrests in addition to having the strongest correlation to police shootings.  Given the more frequent interactions through arrests that would seem to make sense, but a more exhaustive exploration of the data accounting for population adjustments would provide clearer analysis and was beyond the scope of my work.  And while it took more wrangling of the data than I would have liked, residents had a stronger correlation to arrests than non-residents and correlation for Hispanic non-residents proved even weaker still.  Given all the media coverage and fascination that politicians have on this topic lends credence to it being more hype and conjecture from anecdotal evidence than from true statistical evaluations.
+
+The answers above addressed the problem statement of this work.  I gained a clearer understanding of the dangers law enforcement officers face, and I saw correlations to crime that did not match a lot of commonly held beliefs.  I dispelled some notions that I went into this with and while it ultimately did not help me give guidance to my son, I learned a lot and felt better armed by statistical information along the way.  In doing so I felt some relief about his previous career selection.  And knowing my son, I could easily be revisiting this report after another semester.
+
+My work was far from exhaustive given how inexperienced I am in this process, and given the scope of the data, a lot more analysis could provide fascinating insights into many other aspects of the data and further analysis on what I have started.  Someone with a lot more experience with machine learning could bring more tools to dig deeper into many of my questions.  Years could be spent pulling in supporting data and deeper analysis of the data.  It could be summarized differently and complemented by supporting work on race, ethnicity and gender.  Going through this learning process and coming up with my own conclusions using tools that I have learned from this class, evokes a strong sense of accomplishment.  I am eager to learn more and build on these tools in future courses in the program.
+
