@@ -4,7 +4,7 @@
 
 ## Description
  
-This project was one of my first. I used R to explore the data and attempted a logistic model on determining gender of a person fatally shot by police.
+This project was one of my first. I used R to explore the data and created a logistic classification model to predict the gender of a person fatally shot by police.
 
 ## Format
 
