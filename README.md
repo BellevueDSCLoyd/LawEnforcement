@@ -10,3 +10,8 @@ This project was one of my earliest data scienct projects. I used R to explore t
 
 R was used to [code](code/FinalProject_LoydSam_Task3.r) the exploration. [R-markdown](code/FinalProject_LastDraft.Rmd) was used to create a [pdf](FinalProject_LastDraft.pdf) of the final work.
 
+## Tools
+
+* R
+* RMarkdown
+* RStudio
