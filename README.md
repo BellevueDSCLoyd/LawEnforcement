@@ -12,7 +12,7 @@ This project was one of my earliest data scienct projects. I used R to explore t
 
 [Other Data](https://crime-data-explorer.fr.cloud.gov/pages/home)
 
-I have copies the partially wrangled data used (here)[data/] in zip format.
+I have copies the partially wrangled data used [here](data/) in zip format.
 
 ## Format
 
