@@ -8,11 +8,11 @@ This project was one of my earliest data scienct projects. I used R to explore t
 
 ## Data 
 
-(Kaggle Data Set)[https://www.kaggle.com/brendanhasz/fatal-police-shootings#fatal-police-shootings-data.csv]
+[Kaggle Data Set](https://www.kaggle.com/brendanhasz/fatal-police-shootings#fatal-police-shootings-data.csv)
 
-(Other Data)[https://crime-data-explorer.fr.cloud.gov/pages/home)
+[Other Data](https://crime-data-explorer.fr.cloud.gov/pages/home)
 
-I have copies the partially wrangled data used (here)[data/].
+I have copies the partially wrangled data used (here)[data/] in zip format.
 
 ## Format
 
