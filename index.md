@@ -35,4 +35,4 @@ To run locally, install R and RStudio. Download the code, data and markdown file
 
 ## Credits 
 
-_Police Car (image)[https://unsplash.com/photos/7mqsZsE6FaU] by Matt Popovich at (Unsplash)[https://unsplash.com/]_
+_Police Car [image](https://unsplash.com/photos/7mqsZsE6FaU) by Matt Popovich at [Unsplash](https://unsplash.com/)_
