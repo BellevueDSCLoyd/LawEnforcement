@@ -14,9 +14,14 @@ This project was one of my earliest data scienct projects. I used R to explore t
 
 I have copies the partially wrangled data used [here](data/) in zip format.
 
-## Format
+## Code
 
-R was used to [code](code/FinalProject_LoydSam_Task3.r) the exploration. [R-markdown](code/FinalProject_LastDraft.Rmd) was used to create a [pdf](FinalProject_LastDraft.pdf) of the final work.
+* R was used to [code](code/FinalProject_LoydSam_Task3.r) the exploration. 
+* [R-markdown](code/FinalProject_LastDraft.Rmd) was used to create final documentatioin.
+
+## Documentation 
+
+[PDF](FinalProject_LastDraft.pdf) of the final work.
 
 ## Instructions
 
@@ -27,3 +32,7 @@ To run locally, install R and RStudio. Download the code, data and markdown file
 * R
 * RMarkdown
 * RStudio
+
+## Credits 
+
+_Police Car (image)[https://unsplash.com/photos/7mqsZsE6FaU] by Matt Popovich at (Unsplash)[https://unsplash.com/]_
