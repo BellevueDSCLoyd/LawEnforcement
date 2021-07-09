@@ -8,9 +8,9 @@ This project was one of my earliest data scienct projects. I used R to explore t
 
 ## Data 
 
-[Kaggle Data Set](https://www.kaggle.com/brendanhasz/fatal-police-shootings#fatal-police-shootings-data.csv)
+[The Kaggle [data](https://www.kaggle.com/brendanhasz/fatal-police-shootings#fatal-police-shootings-data.csv) provided by [Brendan Hasz](https://www.kaggle.com/brendanhasz).
 
-[Other Data](https://crime-data-explorer.fr.cloud.gov/pages/home)
+Crime Explorer [data](https://crime-data-explorer.fr.cloud.gov/pages/home)
 
 I have copies the partially wrangled data used [here](data/) in zip format.
 
